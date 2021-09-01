@@ -48,10 +48,20 @@ const Tabs = ({ tabs, margin }) => {
     };
 
     adjust();
-    window.addEventListener('resize', adjust);
+
+    // Create an observer instance linked to the callback function
+    const resizeObserver = new ResizeObserver(entries => {
+      console.log(entries);
+      adjust();
+    });
+
+    // Start observing the target node for configured mutations
+    resizeObserver.observe(tabsRef.current);
+
+    // Later, you can stop observing
 
     return () => {
-      window.removeEventListener('resize', adjust);
+      resizeObserver.unobserve(tabsRef.current);
     };
   }, [tabsRef]);
 
