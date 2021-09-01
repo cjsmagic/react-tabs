@@ -6,9 +6,14 @@ const propTypes = {
   margin: PropTypes.number.required
 };
 
+var c = null;
+var ctx = null;
+
 const getTextWidth = (txt, fontSize, fontFamily) => {
-  var c = document.createElement('canvas');
-  var ctx = c.getContext('2d');
+  if (!ctx) {
+    c = document.createElement('canvas');
+    ctx = c.getContext('2d');
+  }
   ctx.font = '30px Arial';
   return Math.round(ctx.measureText(txt).width);
 };
