@@ -1,0 +1,26 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.tabs {
+  display: flex;
+  overflow: hidden;
+  background-color: lightblue;
+}
+
+.tab {
+  padding: 5px 0px;
+  position: relative;
+  text-align: center;
+}
+
+.tab:after {
+  content: ' ';
+  display: flex;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-bottom: 5px solid black;
+}
