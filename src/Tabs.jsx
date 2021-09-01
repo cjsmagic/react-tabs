@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
-
+import * as _ from 'lodash';
 const propTypes = {
   tabs: PropTypes.array.required,
   margin: PropTypes.number.required
@@ -24,10 +24,13 @@ const Tabs = ({ tabs, margin }) => {
   const [moreTabs, setMoreTabs] = useState([]);
 
   useEffect(() => {
+    let availableWidth = 0;
+    let currentWidth = 0;
     const adjust = () => {
       debugger;
       if (tabsRef.current && tabsRef.current.clientWidth) {
-        let availableWidth = tabsRef.current.clientWidth - 100;
+        currentWidth = tabsRef.current.clientWidth;
+        availableWidth = currentWidth - 100;
         console.log(availableWidth);
         const _visibleTabs = [];
         const _moreTabs = [];
@@ -50,13 +53,15 @@ const Tabs = ({ tabs, margin }) => {
     adjust();
 
     // Create an observer instance linked to the callback function
-    const resizeObserver = new ResizeObserver(entries => {
-      console.log(entries);
-      adjust();
-    });
+    const callback = _.throttle(entries => {
+      entries.forEach(entry => {
+        adjust();
+      });
+    }, 1000);
+    const resizeObserver = new ResizeObserver(callback);
 
     // Start observing the target node for configured mutations
-    resizeObserver.observe(tabsRef.current);
+    if (tabsRef.current) resizeObserver.observe(tabsRef.current);
 
     // Later, you can stop observing
 
